@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:travel_ui/models/activity_model.dart';
 import 'package:travel_ui/models/destination_model.dart';
 
 class DestinationScreen extends StatefulWidget {
@@ -22,14 +23,21 @@ class _DestinationScreenState extends State<DestinationScreen> {
               Container(
                 height: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.0),
-                    boxShadow: [
-                      BoxShadow(color: Colors.black26, offset: Offset(0.0, 2.0))
-                    ]),
+//                  borderRadius: BorderRadius.circular(30.0),
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(30),
+                  ),
+
+                  boxShadow: [
+                    BoxShadow(color: Colors.black26, offset: Offset(0.0, 2.0))
+                  ],
+                ),
                 child: Hero(
                   tag: widget.destination.imageUrl,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(30.0),
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(30),
+                    ),
                     child: Image(
                       image: AssetImage(widget.destination.imageUrl),
                       fit: BoxFit.cover,
@@ -109,6 +117,145 @@ class _DestinationScreenState extends State<DestinationScreen> {
                 ),
               )
             ],
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: widget.destination.activities.length,
+              itemBuilder: (context, index) {
+                Activity activity = widget.destination
+                    .activities[index]; // retrieving destinations' activities
+
+                return Stack(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.fromLTRB(40.0, 5.0, 20.0, 5.0),
+                      height: 170.0,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(100.0, 20.0, 20.0, 20.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  width: 120.0,
+                                  child: Text(
+                                    activity.name,
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                  ),
+                                ),
+                                Column(
+                                  children: <Widget>[
+                                    Text(
+                                      '\$${activity.price}',
+                                      style: TextStyle(
+                                        fontSize: 22.0,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Per pax',
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Text(
+                              activity.type,
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10.0),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  alignment: Alignment.center,
+                                  width: 70.0,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColor,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(5.0),
+                                    child: Text(
+                                      activity.startTimes[0],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 20.0),
+                                Container(
+                                  alignment: Alignment.center,
+                                  width: 70.0,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColor,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(5.0),
+                                    child: Text(
+                                      activity.startTimes[1],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 15.0,
+                      left: 10.0,
+                      bottom: 15.0,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20.0),
+                        child: Image.asset(
+                          activity.imageUrl,
+                          width: 110.0,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              },
+            ),
           )
         ],
       ),
